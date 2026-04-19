@@ -22,7 +22,20 @@ public class TodoList {
     tasks.add(task);
   }
 
+  /**
+   * Deletes a task at the given index.
+   *
+   * @param index the index of the task to remove
+   * @return the removed task
+   */
+  public String deleteTask(int index) {
+    return tasks.remove(index);
+  }
 
+  /** Clears all tasks from the list */
+  public void clearTasks() {
+    tasks.clear();
+  }
 
   /**
    * Returns the list of tasks

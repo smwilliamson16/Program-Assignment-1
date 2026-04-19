@@ -28,10 +28,10 @@ public class TodoApp {
           handleView(todoList);
           break;
         case "3":
-          System.out.println("Delete is not implemented yet.");
+          handleDelete(todoList, scanner);
           break;
         case "4":
-          System.out.println("Clear is not implemented yet.");
+          handleClear(todoList, scanner);
           break;
         case "0":
           running = false;
@@ -52,8 +52,8 @@ public class TodoApp {
     System.out.println("=== To-Do List ===");
     System.out.println("1) Add task");
     System.out.println("2) View tasks");
-    System.out.println("3) Delete task (coming soon)");
-    System.out.println("4) Clear tasks (coming soon)");
+    System.out.println("3) Delete task");
+    System.out.println("4) Clear tasks");
     System.out.println("0) Quit");
     System.out.print("Choose an option: ");
   }
@@ -91,6 +91,60 @@ public class TodoApp {
     System.out.println("Tasks:");
     for (int i = 0; i < todoList.getTasks().size(); i++) {
       System.out.println((i + 1) + ") " + todoList.getTasks().get(i));
+    }
+  }
+
+  /**
+   * Handles deleting a task by number.
+   *
+   * @param todoList the to-do list
+   * @param scanner the scanner for user input
+   */
+  private static void handleDelete(TodoList todoList, Scanner scanner) {
+    if (todoList.isEmpty()) {
+      System.out.println("No tasks to delete.");
+      return;
+    }
+
+    handleView(todoList);
+    System.out.print("Enter the number of the task to delete: ");
+    String input = scanner.nextLine().trim();
+
+    try {
+      int taskNumber = Integer.parseInt(input);
+
+      if (taskNumber < 1 || taskNumber > todoList.getTasks().size()) {
+        System.out.println("Invalid task number.");
+        return;
+      }
+
+      String removedTask = todoList.deleteTask(taskNumber - 1);
+      System.out.println("Deleted: " + removedTask);
+    } catch (NumberFormatException e) {
+      System.out.println("Please enter a valid number.");
+    }
+  }
+
+  /**
+   * Handles clearing all tasks.
+   *
+   * @param todoList the to-do list
+   * @param scanner the scanner for user input
+   */
+  private static void handleClear(TodoList todoList, Scanner scanner) {
+    if (todoList.isEmpty()) {
+      System.out.println("The list is already empty.");
+      return;
+    }
+
+    System.out.print("Are you sure you want to clear all tasks? (y/n): ");
+    String confirm = scanner.nextLine().trim().toLowerCase();
+
+    if (confirm.equals("y") || confirm.equals("yes")) {
+      todoList.clearTasks();
+      System.out.println("All tasks cleared.");
+    } else {
+      System.out.println("Clear canceled.");
     }
   }
 }
